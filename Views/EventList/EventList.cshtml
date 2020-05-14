@@ -1,0 +1,124 @@
+@using System.Linq;
+@using System.Web;
+@using System;
+@using System.Collections.Generic;
+
+@model CalendarMVC.Models.EventListViewModel
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <style>
+
+         .header
+         {
+             padding: 20px;
+             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+             text-align: center;
+             font-size: 20px;
+             color: gray;
+         }
+         
+         .grid-container {
+            
+            display: inline-grid;
+            grid-template-columns: 200px 200px 200px;
+            gap: 5px;
+            background-color:lightgray;
+            padding:5px;
+             align-self: center;
+            justify-self: center;
+            
+                }
+           
+
+        .grid-container > div {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            background-color: rgba(255, 255, 255, 0.8); 
+            text-align: center;
+            padding: 10px 0;
+            font-size:20px;
+                            }
+        .maingrid {
+            display: grid;
+            align-items: center;
+            justify-content: center;
+                }
+
+
+        .href{
+                 display: inline-grid;
+            grid-template-columns: auto auto auto; 
+              gap: 20px;
+            }
+
+      
+        </style>
+
+ </head>
+    <body>
+
+    @{
+       printHeader(Model.MyYear,Model.MyMonth, Model.MyDay);
+       <div class="maingrid">
+            <div class="grid-container">
+            <div>Id</div>
+            <div>Time</div>
+            <div>Description</div>  
+            </div>
+            @{
+                string tempTime;
+                string tempName;
+            }
+        @for(int i=0; i< @Model.EventsInfoList.Count; i++ )
+        {
+            tempTime=@Model.EventsInfoList.ElementAt(i).MyTime;
+            tempName=@Model.EventsInfoList.ElementAt(i).MyName;
+
+            <div class="grid-container">
+            <div><a href="@Model.editEvent(tempName,tempTime)"><div>@i</div></a></div>
+            <div><a href="@Model.editEvent(tempName,tempTime)"><div>@tempTime</div></a></div>
+            <div><a href="@Model.editEvent(tempName,tempTime)"><div>@tempName</div></a></div>
+            </div>
+            
+        }
+        </div>
+          <div class="maingrid">
+        <div class ="href">
+        <a href = "@Model.getEventForm()">add new</a>
+        <a href = "@Model.closeEventList()">close</a>
+        </div>
+         </div>
+    }
+            
+    </body>
+</html>
+@{
+void printHeader(int year, int month, int day)
+{
+        if(day<=9 && month<=9 )
+        {
+            <div class="header">
+            <h1>Events on  0@(day).0@(month).@(year) </h1>
+            </div>
+        }
+       else if(month<=9)
+       {
+            <div class="header">
+            <h1>Events on  @(day).0@(month).@(year)  </h1>
+            </div>
+       }
+        else if(day<=9)
+        {
+            <div class="header">
+            <h1>Events on  0@(day).@(month).@(year)  </h1>
+            </div>
+        }
+        else{
+            <div class="header">
+            <h1>Events on  @(day).@(month).@(year)  </h1>
+            </div>
+        }
+}
+}

@@ -1,0 +1,137 @@
+﻿@using System.Linq;
+@using System.Web;
+@using System;
+@using System.Collections.Generic;
+@using CalendarMVC.Models;
+
+@model CalendarMVC.Models.CalendarViewModel
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <style>
+
+            table.Month
+            {
+                 font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+                border-collapse: collapse; 
+                 table-layout: fixed;
+                width:100%;
+            }
+
+          .MonthCell
+           {
+                text-align: center;
+                border: 2px groove #D3D3D3; 
+                padding: 8px;  
+               
+                width:100%; 
+           }
+
+            .MonthCell:hover
+            {
+                 background-color: #ddd;
+            }
+
+           .MonthHeaderRow
+           {
+                text-align: center;
+                border: 2px groove #D3D3D3; 
+                padding: 10px;  
+                background-color: #EBECF0; 
+           } 
+           .button 
+            {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 10px 24px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+
+            .header
+            {
+                  padding: 20px;
+                 font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+                 text-align: center;
+                  font-size: 40px;
+                  color: gray;
+                
+            }
+        
+        </style>
+
+ </head>
+    <body>
+            <div class="header">
+            <h1>@(monthName(Model.MyMonth)) @(Model.MyYear)</h1>
+            </div>
+            @{
+                 viewMonth(@Model.MyYear,@Model.MyMonth);
+            }
+        
+            <a href = "@Model.getNext()">next</a>
+            <a href = "@Model.getPrev()">previous</a>
+    </body>
+</html>
+
+
+@{
+    void viewMonth(int year,int month)
+    {
+          <table class = "Month">
+                
+                    @{
+                        string[] WeekDays = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" };
+                        DateTime date =new DateTime(year,month,1);
+                        DateTime nextMonthDate= date.AddMonths(1);
+                        DateTime currDate;
+                        int nextMonth = nextMonthDate.Month;
+                        int currDayOfWeek = (int)date.DayOfWeek;
+                        if(currDayOfWeek==0){
+                            currDate = date.AddDays(-(6));
+                        }
+                        else{
+                    currDate = date.AddDays(-(currDayOfWeek-1));
+                        }
+                     }
+                <tr>
+                    @for(var k=0;k<7;k++)
+                    {
+                        <th class ="MonthHeaderRow">@WeekDays[k]</th>
+                    }
+                </tr>
+                @while(currDate.Month!=nextMonth)
+                {
+                 <tr>
+                  @for (var i = 1; i <= 7; i++)
+                     {
+                        <td class ="MonthCell">  
+                            <a href="@Model.getEventList(currDate.Year,currDate.Month,currDate.Day)"><div>@(currDate.Day)</div></a>
+                        </td>
+                        currDate= currDate.AddDays(1);
+                     }
+                </tr>
+                }
+    </table>
+    }
+
+
+  string monthName(int monthNum)
+   {
+       String[] names= {"January", "February","March","April","May","June","July","August","September","October","November","December"};
+        return names[monthNum-1];
+   }   
+
+}
+
+
+
+
+

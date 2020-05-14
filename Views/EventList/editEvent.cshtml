@@ -1,0 +1,114 @@
+@using System.Linq;
+@using System.Web;
+@using System;
+@using System.Collections.Generic;
+
+@model CalendarMVC.Models.EventViewModel
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <style>
+
+        .title
+         {
+             padding: 20px;
+             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+             text-align: center;
+             font-size: 50px;
+             color: gray;
+         }
+        .info
+         {
+             padding: 5px;
+             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+             text-align: center;
+             font-size: 25px;
+             color: gray;
+         }
+
+         .textBox{
+             border: 4px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+             padding: 10px;
+             margin: 10px;
+         }
+       
+     .maingrid {
+            display: grid;
+            align-items: center;
+            justify-content: center;
+                }
+
+                 .href{
+                 display: inline-grid;
+            grid-template-columns: auto auto auto; 
+              gap: 20px;
+            }
+        
+        </style>
+
+ </head>
+    <body>
+
+    @{
+        <div class = "title">
+        Edit event</div>
+     
+       printHeader(Model.MyYear,Model.MyMonth, Model.MyDay);
+   
+        <form method="POST">
+            <div class= "maingrid">
+            <div class ="textBox">  
+                @Html.Label("Name")  
+                <input type="text" id="MyName" name="MyName"  value=@(Model.MyName)>  
+            </div>   
+            <div class ="textBox">  
+                @Html.Label("Time")  
+                <input type="time" id="MyTime" name="MyTime"  value=@(Model.MyTime)>
+            </div>  
+            </div>
+
+         
+              <div class ="maingrid">
+                <div class ="href">
+             <input type="submit" value="save">
+              <input type="submit" value="cancel">
+            <a href = "@Model.cancelEvent() ">delete</a>
+             </div>
+             </div>  
+        </form>
+       
+    }
+            
+    </body>
+</html>
+@{
+void printHeader(int year, int month, int day)
+{
+        if(day<=9 && month<=9 )
+        {
+            <div class="info">
+            Date:  0@(day).0@(month).@(year)
+            </div>
+        }
+       else if(month<=9)
+       {
+            <div class="info">
+            Date:   @(day).0@(month).@(year) 
+            </div>
+       }
+        else if(day<=9)
+        {
+            <div class="info">
+            Date:   0@(day).@(month).@(year) 
+            </div>
+        }
+        else{
+            <div class="info">
+           Date:   @(day).@(month).@(year)  
+            </div>
+        }
+}
+}
